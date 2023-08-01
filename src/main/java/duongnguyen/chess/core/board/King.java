@@ -1,8 +1,9 @@
 package duongnguyen.chess.core.board;
 
+import duongnguyen.chess.core.model.Color;
 import duongnguyen.chess.exception.InvalidMoveException;
 
-public class King extends Piece {
+class King extends Piece {
     private boolean hasMoved;
 
     public King(Color color, int x, int y, Board board) {
@@ -42,6 +43,11 @@ public class King extends Piece {
         }
 
         return false;
+    }
+
+    @Override
+    public String getSymbol() {
+        return "K";
     }
 
     @Override

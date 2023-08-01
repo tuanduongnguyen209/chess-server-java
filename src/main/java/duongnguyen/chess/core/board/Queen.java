@@ -1,6 +1,8 @@
 package duongnguyen.chess.core.board;
 
-public class Queen extends SlidingPiece {
+import duongnguyen.chess.core.model.Color;
+
+class Queen extends SlidingPiece {
     public Queen (Color color, int x, int y, Board board) {
         super(color, x, y, board);
     }
@@ -22,5 +24,10 @@ public class Queen extends SlidingPiece {
         }
 
         return false;
+    }
+
+    @Override
+    public String getSymbol() {
+        return "Q";
     }
 }

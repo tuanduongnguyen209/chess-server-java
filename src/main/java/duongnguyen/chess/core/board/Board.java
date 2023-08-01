@@ -1,26 +1,27 @@
 package duongnguyen.chess.core.board;
 
+import duongnguyen.chess.core.model.Color;
+import duongnguyen.chess.exception.InvalidMoveException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
+class Board {
     public static final int SIZE = 8;
 
     private final Square[][] squares;
     private final List<Piece> whitePieces;
     private final List<Piece> blackPieces;
-    private Move lastMove;
+    private final List<Move> moves;
 
     public Board() {
         squares = new Square[SIZE][SIZE];
         whitePieces = new ArrayList<>();
         blackPieces = new ArrayList<>();
-        lastMove = null;
-
-        initializeBoard();
+        moves = new ArrayList<>();
     }
 
-    private void initializeBoard() {
+    public void initializeBoard() {
         // Initialize all squares on the board
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
@@ -70,11 +71,11 @@ public class Board {
     }
 
     public Move getLastMove() {
-        return lastMove;
+        return moves.get(moves.size() - 1);
     }
 
-    public void setLastMove(Move lastMove) {
-        this.lastMove = lastMove;
+    public List<Move> getMoves() {
+        return moves;
     }
 
     public void placePiece(Piece piece) {
@@ -104,6 +105,19 @@ public class Board {
             piecesList.remove(piece);
         } else {
             throw new IllegalArgumentException("No piece to remove");
+        }
+    }
+
+    public void movePiece(int fromX, int fromY, int toX, int toY) throws InvalidMoveException {
+        Piece piece = getSquare(fromX, fromY).getPiece();
+        if (piece == null) {
+            throw new InvalidMoveException("No piece to move");
+        }
+
+        Move move = piece.moveTo(toX, toY);
+        moves.add(move);
+        if (move.getPieceCaptured() != null) {
+            removePiece(move.getPieceCaptured());
         }
     }
 }

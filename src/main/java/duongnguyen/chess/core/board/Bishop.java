@@ -1,6 +1,8 @@
 package duongnguyen.chess.core.board;
 
-public class Bishop extends SlidingPiece {
+import duongnguyen.chess.core.model.Color;
+
+class Bishop extends SlidingPiece {
     public Bishop(Color color, int x, int y, Board board) {
         super(color, x, y, board);
     }
@@ -21,5 +23,10 @@ public class Bishop extends SlidingPiece {
         }
 
         return false;
+    }
+
+    @Override
+    public String getSymbol() {
+        return "B";
     }
 }

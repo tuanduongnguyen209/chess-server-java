@@ -1,8 +1,9 @@
 package duongnguyen.chess.core.board;
 
+import duongnguyen.chess.core.model.Color;
 import duongnguyen.chess.exception.InvalidMoveException;
 
-public class Pawn extends Piece {
+class Pawn extends Piece {
     private boolean hasMoved;
 
     public Pawn(Color color, int x, int y, Board board) {
@@ -54,6 +55,11 @@ public class Pawn extends Piece {
         }
 
         return false;
+    }
+
+    @Override
+    public String getSymbol() {
+        return "P";
     }
 
     @Override

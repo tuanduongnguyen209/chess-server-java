@@ -1,8 +1,9 @@
 package duongnguyen.chess.core.board;
 
+import duongnguyen.chess.core.model.Color;
 import duongnguyen.chess.exception.InvalidMoveException;
 
-public class Rook extends SlidingPiece {
+class Rook extends SlidingPiece {
     private boolean hasMoved;
     public Rook (Color color, int x, int y, Board board) {
         super(color, x, y, board);
@@ -32,6 +33,11 @@ public class Rook extends SlidingPiece {
         }
 
         return false;
+    }
+
+    @Override
+    public String getSymbol() {
+        return "R";
     }
 
     @Override

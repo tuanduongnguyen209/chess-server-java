@@ -1,6 +1,6 @@
 package duongnguyen.chess.core.board;
 
-public class Square {
+class Square {
     private Piece piece;
     private final int x;
     private final int y;

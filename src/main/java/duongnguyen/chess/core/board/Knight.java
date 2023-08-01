@@ -1,6 +1,8 @@
 package duongnguyen.chess.core.board;
 
-public class Knight extends Piece {
+import duongnguyen.chess.core.model.Color;
+
+class Knight extends Piece {
     public Knight(Color color, int x, int y, Board board) {
         super(color, x, y, board);
     }
@@ -25,5 +27,10 @@ public class Knight extends Piece {
         }
 
         return false;
+    }
+
+    @Override
+    public String getSymbol() {
+        return "N";
     }
 }

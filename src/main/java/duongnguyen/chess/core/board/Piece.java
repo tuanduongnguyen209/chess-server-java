@@ -1,8 +1,10 @@
 package duongnguyen.chess.core.board;
 
+import duongnguyen.chess.core.model.Color;
+import duongnguyen.chess.core.model.ImmutablePiece;
 import duongnguyen.chess.exception.InvalidMoveException;
 
-public abstract class Piece {
+abstract class Piece {
     private final Color color;
     private final Board board;
     private int x;
@@ -28,6 +30,12 @@ public abstract class Piece {
     }
 
     public abstract boolean isValidMove(int newX, int newY);
+
+    public abstract String getSymbol();
+
+    public ImmutablePiece toImmutablePiece() {
+        return new ImmutablePiece(x, y, getSymbol(), getColor());
+    }
 
     public Move moveTo(int x, int y) throws InvalidMoveException {
         if (!isValidMove(x, y)) {

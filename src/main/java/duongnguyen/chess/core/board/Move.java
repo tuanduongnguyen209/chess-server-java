@@ -1,6 +1,8 @@
 package duongnguyen.chess.core.board;
 
-public class Move {
+import duongnguyen.chess.core.model.ImmutableMove;
+
+class Move {
     private final Square from;
     private final Square to;
     private final Piece pieceMoved;
@@ -31,5 +33,9 @@ public class Move {
 
     public void setCapturedPiece(Piece piece) {
         to.setPiece(piece);
+    }
+
+    public ImmutableMove toImmutableMove() {
+        return new ImmutableMove(from.getX(), from.getY(), to.getX(), to.getY(), pieceMoved.getSymbol(), pieceMoved.getColor());
     }
 }

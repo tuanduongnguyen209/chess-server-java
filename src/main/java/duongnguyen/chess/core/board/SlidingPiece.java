@@ -1,6 +1,8 @@
 package duongnguyen.chess.core.board;
 
-public abstract class SlidingPiece extends Piece {
+import duongnguyen.chess.core.model.Color;
+
+abstract class SlidingPiece extends Piece {
     public SlidingPiece(Color color, int x, int y, Board board) {
         super(color, x, y, board);
     }
