@@ -2,7 +2,7 @@ package duongnguyen.chess.core.board;
 
 import duongnguyen.chess.core.model.Color;
 import duongnguyen.chess.core.model.ImmutablePiece;
-import duongnguyen.chess.exception.InvalidMoveException;
+import duongnguyen.chess.core.exception.InvalidMoveException;
 
 abstract class Piece {
     private final Color color;

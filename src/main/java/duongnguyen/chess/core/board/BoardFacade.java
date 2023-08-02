@@ -3,7 +3,7 @@ package duongnguyen.chess.core.board;
 import duongnguyen.chess.core.model.BoardState;
 import duongnguyen.chess.core.model.Color;
 import duongnguyen.chess.core.model.GameStatus;
-import duongnguyen.chess.exception.InvalidMoveException;
+import duongnguyen.chess.core.exception.InvalidMoveException;
 
 import java.util.List;
 

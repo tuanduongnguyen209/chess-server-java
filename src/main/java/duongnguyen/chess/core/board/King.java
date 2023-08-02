@@ -1,7 +1,7 @@
 package duongnguyen.chess.core.board;
 
 import duongnguyen.chess.core.model.Color;
-import duongnguyen.chess.exception.InvalidMoveException;
+import duongnguyen.chess.core.exception.InvalidMoveException;
 
 class King extends Piece {
     private boolean hasMoved;

@@ -1,4 +1,4 @@
-package duongnguyen.chess.exception;
+package duongnguyen.chess.core.exception;
 
 public class InvalidMoveException extends IllegalArgumentException {
     public InvalidMoveException(String message) {

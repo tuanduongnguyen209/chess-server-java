@@ -2,13 +2,13 @@ package duongnguyen.chess.core.service;
 
 import duongnguyen.chess.core.driver.GameMaster;
 import duongnguyen.chess.core.driver.GamePlayer;
-import duongnguyen.chess.core.port.in.CreateANewGameUseCase;
-import duongnguyen.chess.core.port.in.PlayerJoinAGameUseCase;
+import duongnguyen.chess.core.port.in.CreateANewGamePort;
+import duongnguyen.chess.core.port.in.PlayerJoinAGamePort;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameManagerService implements CreateANewGameUseCase, PlayerJoinAGameUseCase {
+public class GameManagerService implements CreateANewGamePort, PlayerJoinAGamePort {
     private final Map<String, GameMaster> games = new HashMap<>();
     private final Map<String, GamePlayer> players = new HashMap<>();
 

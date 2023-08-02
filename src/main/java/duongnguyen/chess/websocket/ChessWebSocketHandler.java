@@ -1,4 +1,4 @@
-package duongnguyen.chess.configuration;
+package duongnguyen.chess.websocket;
 
 import java.util.HashMap;
 import java.util.Map;
