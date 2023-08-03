@@ -1,4 +1,4 @@
-package duongnguyen.chess.core.driver;
+package duongnguyen.chess.core.model;
 
 public enum GameCommandType {
     MOVE,

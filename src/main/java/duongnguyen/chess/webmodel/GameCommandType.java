@@ -1,0 +1,13 @@
+package duongnguyen.chess.webmodel;
+
+public enum GameCommandType {
+    CREATE_A_NEW_GAME,
+    PLAYER_JOIN_A_GAME,
+    PLAYER_MOVE_A_PIECE,
+    PLAYER_LEAVE_A_GAME,
+    PLAYER_RESIGN_A_GAME,
+    PLAYER_OFFER_DRAW,
+    PLAYER_ACCEPT_DRAW,
+    PLAYER_REJECT_DRAW,
+    PLAYER_CANCEL_DRAW,
+}

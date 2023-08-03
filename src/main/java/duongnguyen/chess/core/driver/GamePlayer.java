@@ -1,18 +1,23 @@
 package duongnguyen.chess.core.driver;
 
-public class GamePlayer implements GameEventListener {
-    private final GameCommandHandler commandHandler;
+import duongnguyen.chess.core.model.Color;
+import duongnguyen.chess.core.model.GameCommand;
 
-    public GamePlayer(GameCommandHandler commandHandler) {
+public class GamePlayer {
+    private final GameCommandHandler commandHandler;
+    private final Color color;
+
+
+    public GamePlayer(GameCommandHandler commandHandler, Color color) {
         this.commandHandler = commandHandler;
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public void sendGameCommand(GameCommand command) {
         commandHandler.handleCommand(command);
-    }
-
-    @Override
-    public void handleEvent(GameEvent event) {
-
     }
 }

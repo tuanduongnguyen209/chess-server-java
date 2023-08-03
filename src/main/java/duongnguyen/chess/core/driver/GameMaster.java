@@ -1,6 +1,9 @@
 package duongnguyen.chess.core.driver;
 
 import duongnguyen.chess.core.board.BoardFacade;
+import duongnguyen.chess.core.model.GameCommand;
+import duongnguyen.chess.core.model.GameEvent;
+import duongnguyen.chess.core.model.GameEventType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +37,9 @@ public class GameMaster implements GameCommandHandler {
 
     public void registerGameEventListener(GameEventListener listener) {
         gameEventListeners.add(listener);
+    }
+
+    public void unregisterGameEventListener(GameEventListener listener) {
+        gameEventListeners.remove(listener);
     }
 }
