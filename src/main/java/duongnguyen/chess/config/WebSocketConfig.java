@@ -1,4 +1,4 @@
-package duongnguyen.chess.websocket;
+package duongnguyen.chess.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import duongnguyen.chess.adapter.ChessWebSocketAdapter;
@@ -21,10 +21,5 @@ public class WebSocketConfig implements WebSocketConfigurer, WebSocketMessageBro
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(chessWebSocketAdapter, "/api/ws").setAllowedOrigins("*");
-    }
-
-    @Bean
-    public ObjectMapper customObjectMapper() {
-        return new ObjectMapper();
     }
 }
