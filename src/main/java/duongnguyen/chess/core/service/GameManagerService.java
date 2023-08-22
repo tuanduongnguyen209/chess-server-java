@@ -43,6 +43,11 @@ public class GameManagerService implements GameManagerPort {
             throw new IllegalStateException("Game with id " + gameId + " is full");
         }
         var player = new GamePlayer(game, availableColor.get(0));
+
+        if (availableColor.size() == 1) {
+            game.startGame();
+        }
+
         players.put(playerId, player);
         return player;
     }

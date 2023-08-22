@@ -21,6 +21,12 @@ public class GameMaster implements GameCommandHandler {
         return new GameMaster();
     }
 
+    public void startGame() {
+        boardFacade.initBoard();
+        GameEvent event = new GameEvent(GameEventType.BOARD_STATE_CHANGED, boardFacade.getStatus(), boardFacade.getBoardState());
+        gameEventListeners.forEach(listener -> listener.handleEvent(event));
+    }
+
     @Override
     public void handleCommand(GameCommand command) {
         switch (command.type()) {

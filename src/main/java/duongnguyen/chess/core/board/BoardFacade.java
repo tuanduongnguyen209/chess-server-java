@@ -9,7 +9,7 @@ import java.util.List;
 
 public class BoardFacade {
     private Board board;
-    private Color turn;
+    private Color turn = Color.WHITE;
 
     public void initBoard() {
         board = new Board();

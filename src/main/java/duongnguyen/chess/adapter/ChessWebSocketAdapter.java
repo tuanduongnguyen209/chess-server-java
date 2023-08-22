@@ -43,7 +43,12 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
         String payload = message.getPayload();
         System.out.println("Received message from session ID " + sessionId + ": " + payload);
         GameCommandWebModel gameCommand = objectMapper.readValue(payload, GameCommandWebModel.class);
-        handleGameCommand(gameCommand, session);
+        try {
+            handleGameCommand(gameCommand, session);
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.sendMessage(new TextMessage(e.getMessage()));
+        }
     }
 
     @Override
@@ -58,12 +63,22 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
 
             case CREATE_A_NEW_GAME -> {
                 String gameId = "game-" + System.currentTimeMillis();
+                System.out.println("CREATE_A_NEW_GAME with ID: " + gameId);
                 gameManager.createANewGame(gameId);
                 // Player auto join the game after creating it
                 gameManager.playerJoinAGame(gameId, command.getPlayerId());
                 sessionToPlayerId.put(session.getId(), command.getPlayerId());
             }
             case PLAYER_JOIN_A_GAME -> {
+                if (command.getGameId() == null) {
+                    throw new IllegalArgumentException("Game ID is required");
+                }
+                if (command.getPlayerId() == null) {
+                    throw new IllegalArgumentException("Player ID is required");
+                }
+                if (sessionToPlayerId.containsKey(session.getId())) {
+                    throw new IllegalArgumentException("Player already joined a game");
+                }
                 gameManager.playerJoinAGame(command.getGameId(), command.getPlayerId());
                 gameManager.registerGameEventListener(command.getGameId(), event -> {
                     try {
