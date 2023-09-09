@@ -3,16 +3,21 @@ package duongnguyen.chess.core.service;
 import duongnguyen.chess.core.driver.GameEventListener;
 import duongnguyen.chess.core.driver.GameMaster;
 import duongnguyen.chess.core.driver.GamePlayer;
+import duongnguyen.chess.core.driver.GameSession;
 import duongnguyen.chess.core.model.Color;
 import duongnguyen.chess.core.port.in.GameManagerPort;
+import duongnguyen.chess.core.port.out.GameSessionsPort;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class GameManagerService implements GameManagerPort {
+public class GameManagerService implements GameManagerPort, GameSessionsPort {
     private final Map<String, GameMaster> games = new HashMap<>();
     private final Map<String, GamePlayer> players = new HashMap<>();
+    private final Map<String, String> playerGameMap = new HashMap<>();
+    private final Map<String, List<String>> gamePlayerMap = new HashMap<>();
 
     @Override
     public GameMaster createANewGame(String gameId) {
@@ -32,6 +37,9 @@ public class GameManagerService implements GameManagerPort {
         if (players.containsKey(playerId)) {
             return players.get(playerId);
         }
+        if (playerGameMap.containsKey(playerId)) {
+            throw new IllegalStateException("Player with id " + playerId + " is already in a game");
+        }
         var game = games.get(gameId);
         var takenColor = players.values().stream()
                 .map(GamePlayer::getColor)
@@ -49,6 +57,8 @@ public class GameManagerService implements GameManagerPort {
         }
 
         players.put(playerId, player);
+        playerGameMap.put(playerId, gameId);
+        gamePlayerMap.computeIfAbsent(gameId, key -> List.of()).add(playerId);
         return player;
     }
 
@@ -78,5 +88,12 @@ public class GameManagerService implements GameManagerPort {
             throw new IllegalArgumentException("Game with id " + gameId + " does not exist");
         }
         game.unregisterGameEventListener(listener);
+    }
+
+    @Override
+    public List<GameSession> getGameSessions() {
+        return games.keySet().stream()
+                .map(gameMaster -> new GameSession(gameMaster, gamePlayerMap.get(gameMaster)))
+                .toList();
     }
 }

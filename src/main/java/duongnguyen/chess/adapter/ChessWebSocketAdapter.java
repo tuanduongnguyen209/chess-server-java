@@ -31,7 +31,7 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         String sessionId = session.getId();
         sessions.put(sessionId, session);
         System.out.println("New WebSocket connection established with session ID: " + sessionId);
