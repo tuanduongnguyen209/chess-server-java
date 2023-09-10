@@ -3,6 +3,7 @@ package duongnguyen.chess.adapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import duongnguyen.chess.core.model.GameCommand;
 import duongnguyen.chess.core.model.GameCommandType;
+import duongnguyen.chess.core.model.GameEventType;
 import duongnguyen.chess.core.port.in.GameManagerPort;
 import duongnguyen.chess.webmodel.GameCommandWebModel;
 import duongnguyen.chess.webmodel.GameEventWebModel;
@@ -13,6 +14,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,9 +67,16 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
                 String gameId = "game-" + System.currentTimeMillis();
                 System.out.println("CREATE_A_NEW_GAME with ID: " + gameId);
                 gameManager.createANewGame(gameId);
-                // Player auto join the game after creating it
-                gameManager.playerJoinAGame(gameId, command.getPlayerId());
-                sessionToPlayerId.put(session.getId(), command.getPlayerId());
+                try {
+                    var createdGameEvent = GameEventWebModel.builder()
+                            .gameId(gameId)
+                            .type(GameEventType.GAME_CREATED)
+                            .build();
+                    String payload = objectMapper.writeValueAsString(createdGameEvent);
+                    session.sendMessage(new TextMessage(payload));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             case PLAYER_JOIN_A_GAME -> {
                 if (command.getGameId() == null) {
@@ -79,7 +88,6 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
                 if (sessionToPlayerId.containsKey(session.getId())) {
                     throw new IllegalArgumentException("Player already joined a game");
                 }
-                gameManager.playerJoinAGame(command.getGameId(), command.getPlayerId());
                 gameManager.registerGameEventListener(command.getGameId(), event -> {
                     try {
                         var gameEventWebModel = GameEventWebModel.fromGameEvent(event);
@@ -89,6 +97,7 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
                         e.printStackTrace();
                     }
                 });
+                gameManager.playerJoinAGame(command.getGameId(), command.getPlayerId());
                 sessionToPlayerId.put(session.getId(), command.getPlayerId());
             }
             case PLAYER_MOVE_A_PIECE -> {

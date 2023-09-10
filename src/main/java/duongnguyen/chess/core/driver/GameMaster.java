@@ -27,6 +27,11 @@ public class GameMaster implements GameCommandHandler {
         gameEventListeners.forEach(listener -> listener.handleEvent(event));
     }
 
+    public void playerJoined() {
+        GameEvent event = new GameEvent(GameEventType.PLAYER_JOINED, boardFacade.getStatus(), boardFacade.getBoardState());
+        gameEventListeners.forEach(listener -> listener.handleEvent(event));
+    }
+
     @Override
     public void handleCommand(GameCommand command) {
         switch (command.type()) {

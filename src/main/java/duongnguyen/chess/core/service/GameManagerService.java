@@ -8,10 +8,7 @@ import duongnguyen.chess.core.model.Color;
 import duongnguyen.chess.core.port.in.GameManagerPort;
 import duongnguyen.chess.core.port.out.GameSessionsPort;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameManagerService implements GameManagerPort, GameSessionsPort {
     private final Map<String, GameMaster> games = new HashMap<>();
@@ -20,22 +17,23 @@ public class GameManagerService implements GameManagerPort, GameSessionsPort {
     private final Map<String, List<String>> gamePlayerMap = new HashMap<>();
 
     @Override
-    public GameMaster createANewGame(String gameId) {
+    public void createANewGame(String gameId) {
         if (!games.containsKey(gameId)) {
             var game = GameMaster.newGame();
             games.put(gameId, game);
-            return game;
+            return;
         }
         throw new IllegalArgumentException("Game with id " + gameId + " already exists");
     }
 
     @Override
-    public GamePlayer playerJoinAGame(String gameId, String playerId) {
+    public void playerJoinAGame(String gameId, String playerId) {
         if (!games.containsKey(gameId)) {
             throw new IllegalArgumentException("Game with id " + gameId + " does not exist");
         }
         if (players.containsKey(playerId)) {
-            return players.get(playerId);
+            players.get(playerId);
+            return;
         }
         if (playerGameMap.containsKey(playerId)) {
             throw new IllegalStateException("Player with id " + playerId + " is already in a game");
@@ -58,8 +56,7 @@ public class GameManagerService implements GameManagerPort, GameSessionsPort {
 
         players.put(playerId, player);
         playerGameMap.put(playerId, gameId);
-        gamePlayerMap.computeIfAbsent(gameId, key -> List.of()).add(playerId);
-        return player;
+        gamePlayerMap.computeIfAbsent(gameId, key -> new ArrayList<>()).add(playerId);
     }
 
     @Override
