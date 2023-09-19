@@ -2,10 +2,10 @@ package duongnguyen.chess.webmodel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import duongnguyen.chess.core.model.Color;
-import duongnguyen.chess.core.model.GameEvent;
-import duongnguyen.chess.core.model.GameEventType;
-import duongnguyen.chess.core.model.GameStatus;
+import duongnguyen.chess.domain.model.Color;
+import duongnguyen.chess.domain.model.GameEvent;
+import duongnguyen.chess.domain.model.GameEventType;
+import duongnguyen.chess.domain.model.GameStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

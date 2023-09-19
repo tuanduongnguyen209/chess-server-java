@@ -1,10 +1,8 @@
 package duongnguyen.chess.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import duongnguyen.chess.core.model.GameCommand;
-import duongnguyen.chess.core.model.GameCommandType;
-import duongnguyen.chess.core.model.GameEventType;
-import duongnguyen.chess.core.port.in.GameManagerPort;
+import duongnguyen.chess.domain.model.GameEventType;
+import duongnguyen.chess.domain.port.in.GameDispatcherUseCase;
 import duongnguyen.chess.webmodel.GameCommandWebModel;
 import duongnguyen.chess.webmodel.GameEventWebModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +19,14 @@ import java.util.Map;
 @Component
 public class ChessWebSocketAdapter extends TextWebSocketHandler {
 
-    private final GameManagerPort gameManager;
+    private final GameDispatcherUseCase gameDispatcher;
     private final Map<String, WebSocketSession> sessions = new HashMap<>();
     private final Map<String, String> sessionToPlayerId = new HashMap<>();
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public ChessWebSocketAdapter(GameManagerPort createANewGamePort, ObjectMapper objectMapper) {
-        this.gameManager = createANewGamePort;
+    public ChessWebSocketAdapter(GameDispatcherUseCase createANewGamePort, ObjectMapper objectMapper) {
+        this.gameDispatcher = createANewGamePort;
         this.objectMapper = objectMapper;
     }
 
@@ -62,22 +60,6 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
 
     private void handleGameCommand(GameCommandWebModel command, WebSocketSession session) {
         switch (command.getType()) {
-
-            case CREATE_A_NEW_GAME -> {
-                String gameId = "game-" + System.currentTimeMillis();
-                System.out.println("CREATE_A_NEW_GAME with ID: " + gameId);
-                gameManager.createANewGame(gameId);
-                try {
-                    var createdGameEvent = GameEventWebModel.builder()
-                            .gameId(gameId)
-                            .type(GameEventType.GAME_CREATED)
-                            .build();
-                    String payload = objectMapper.writeValueAsString(createdGameEvent);
-                    session.sendMessage(new TextMessage(payload));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             case PLAYER_JOIN_A_GAME -> {
                 if (command.getGameId() == null) {
                     throw new IllegalArgumentException("Game ID is required");
@@ -88,7 +70,7 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
                 if (sessionToPlayerId.containsKey(session.getId())) {
                     throw new IllegalArgumentException("Player already joined a game");
                 }
-                gameManager.registerGameEventListener(command.getGameId(), event -> {
+                gameDispatcher.registerGameEventListener(command.getGameId(), event -> {
                     try {
                         var gameEventWebModel = GameEventWebModel.fromGameEvent(event);
                         String payload = objectMapper.writeValueAsString(gameEventWebModel);
@@ -97,19 +79,11 @@ public class ChessWebSocketAdapter extends TextWebSocketHandler {
                         e.printStackTrace();
                     }
                 });
-                gameManager.playerJoinAGame(command.getGameId(), command.getPlayerId());
+                gameDispatcher.playerJoinAGame(command.getGameId(), command.getPlayerId());
                 sessionToPlayerId.put(session.getId(), command.getPlayerId());
             }
             case PLAYER_MOVE_A_PIECE -> {
-                var player = gameManager.getPlayer(command.getPlayerId());
-                GameCommand gameCommand = new GameCommand(GameCommandType.MOVE,
-                        new GameCommand.Move(
-                                command.getFromX(),
-                                command.getFromY(),
-                                command.getToX(),
-                                command.getToY()
-                                ), player.getColor());
-                player.sendGameCommand(gameCommand);
+                gameDispatcher.playerSendCommand(command.toGameCommand());
             }
             case PLAYER_LEAVE_A_GAME, PLAYER_CANCEL_DRAW, PLAYER_RESIGN_A_GAME, PLAYER_OFFER_DRAW, PLAYER_ACCEPT_DRAW, PLAYER_REJECT_DRAW -> {
                 throw new UnsupportedOperationException("Not implemented yet");

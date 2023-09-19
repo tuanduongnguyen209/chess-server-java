@@ -2,9 +2,9 @@ package duongnguyen.chess.webmodel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import duongnguyen.chess.core.model.BoardState;
-import duongnguyen.chess.core.model.ImmutableMove;
-import duongnguyen.chess.core.model.ImmutablePiece;
+import duongnguyen.chess.domain.model.BoardState;
+import duongnguyen.chess.domain.model.ImmutableMove;
+import duongnguyen.chess.domain.model.ImmutablePiece;
 import lombok.Getter;
 import lombok.Setter;
 

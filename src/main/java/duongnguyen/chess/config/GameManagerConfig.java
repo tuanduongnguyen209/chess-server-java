@@ -1,26 +1,22 @@
 package duongnguyen.chess.config;
 
-import duongnguyen.chess.core.port.in.GameManagerPort;
-import duongnguyen.chess.core.port.out.GameSessionsPort;
-import duongnguyen.chess.core.service.GameManagerService;
+import duongnguyen.chess.domain.port.in.GameDispatcherUseCase;
+import duongnguyen.chess.domain.port.in.GameSessionUseCase;
+import duongnguyen.chess.domain.service.GameDispatcherService;
+import duongnguyen.chess.domain.service.GameSessionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class GameManagerConfig {
-    private final GameManagerService gameManagerService;
+    private final GameDispatcherService gameDispatcherService;
 
     public GameManagerConfig() {
-        this.gameManagerService = new GameManagerService();
+        this.gameDispatcherService = new GameDispatcherService();
     }
 
     @Bean
-    public GameManagerPort gameManagerPort() {
-        return gameManagerService;
-    }
-
-    @Bean
-    public GameSessionsPort gameSessionsPort() {
-        return gameManagerService;
+    public GameDispatcherUseCase gameManagerPort() {
+        return gameDispatcherService;
     }
 }

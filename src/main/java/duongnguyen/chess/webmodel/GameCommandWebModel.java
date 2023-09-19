@@ -2,11 +2,12 @@ package duongnguyen.chess.webmodel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import duongnguyen.chess.domain.model.GameCommand;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameCommandWebModel {
     @JsonProperty("type")
-    private GameCommandType type;
+    private GameCommandTypeWebModel type;
 
     @JsonProperty("gameId")
     private String gameId;
@@ -17,11 +18,11 @@ public class GameCommandWebModel {
     @JsonProperty("move")
     private String move;
 
-    public GameCommandType getType() {
+    public GameCommandTypeWebModel getType() {
         return type;
     }
 
-    public void setType(GameCommandType type) {
+    public void setType(GameCommandTypeWebModel type) {
         this.type = type;
     }
 
@@ -63,5 +64,15 @@ public class GameCommandWebModel {
 
     public void setMove(String move) {
         this.move = move;
+    }
+
+    public GameCommand toGameCommand() {
+        return new GameCommand(duongnguyen.chess.domain.model.GameCommandType.MOVE,
+                new GameCommand.Move(
+                        this.getFromX(),
+                        this.getFromY(),
+                        this.getToX(),
+                        this.getToY()
+                ), this.getPlayerId(), this.getGameId());
     }
 }
