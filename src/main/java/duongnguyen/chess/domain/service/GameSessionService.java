@@ -17,7 +17,7 @@ public class GameSessionService implements GameSessionUseCase {
 
     @Override
     public List<GameSession> getGameSessions() {
-        return null;
+        return persistencePort.getGameSessions();
     }
 
     @Override

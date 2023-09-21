@@ -1,5 +1,6 @@
 package duongnguyen.chess.config;
 
+import duongnguyen.chess.dto.GameSessionDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -20,8 +21,8 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, GameSessionDto> redisTemplate() {
+        RedisTemplate<String, GameSessionDto> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(this.jedisConnectionFactory);
         return redisTemplate;
     }
