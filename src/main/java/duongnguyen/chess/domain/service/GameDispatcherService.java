@@ -6,9 +6,11 @@ import duongnguyen.chess.domain.model.Color;
 import duongnguyen.chess.domain.model.GameCommand;
 import duongnguyen.chess.domain.model.GamePlayer;
 import duongnguyen.chess.domain.port.in.GameDispatcherUseCase;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class GameDispatcherService implements GameDispatcherUseCase {
     private final Map<String, GameMaster> games = new HashMap<>();
     private final Map<String, GamePlayer> players = new HashMap<>();
