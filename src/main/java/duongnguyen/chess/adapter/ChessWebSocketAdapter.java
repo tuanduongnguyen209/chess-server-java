@@ -1,7 +1,6 @@
 package duongnguyen.chess.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import duongnguyen.chess.domain.model.GameEventType;
 import duongnguyen.chess.domain.port.in.GameDispatcherUseCase;
 import duongnguyen.chess.webmodel.GameCommandWebModel;
 import duongnguyen.chess.webmodel.GameEventWebModel;
@@ -12,7 +11,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -27,10 +27,6 @@ public class GameSessionService implements GameSessionUseCase {
 
     @Override
     public GameSession createGameSession(String playerId) {
-        var gameId = "game-" + System.currentTimeMillis();
-        System.out.println("CREATE_A_NEW_GAME with ID: " + gameId);
-        var gameSession = new GameSession(gameId, List.of(playerId));
-        persistencePort.saveGameSession(gameSession);
-        return new GameSession(gameId, List.of(playerId));
+        return persistencePort.saveGameSession(List.of(playerId));
     }
 }

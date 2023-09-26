@@ -1,8 +1,7 @@
 package duongnguyen.chess.domain.model;
 
-import duongnguyen.chess.domain.model.Color;
-
 public record GamePlayer(
+        String id,
         Color color) {
 
     public Color getColor() {

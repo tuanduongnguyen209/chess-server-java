@@ -5,6 +5,9 @@ import duongnguyen.chess.dto.GameSessionDto;
 import org.springframework.stereotype.Component;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class GameSessionMapper {
     private final ModelMapper modelMapper;
@@ -14,7 +17,10 @@ public class GameSessionMapper {
     }
 
     public GameSession toDomain(GameSessionDto dto) {
-        return modelMapper.map(dto, GameSession.class);
+        var playerIds = dto.getPlayerIds() != null
+                ? List.copyOf(dto.getPlayerIds())
+                : new ArrayList<String>();
+        return new GameSession(dto.getGameId(), playerIds);
     }
 
     public GameSessionDto toDto(GameSession domain) {

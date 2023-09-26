@@ -12,24 +12,37 @@ import java.util.List;
 public class GameMaster implements GameCommandHandler {
     private final List<GameEventListener> gameEventListeners;
     private final BoardFacade boardFacade;
+    private final String gameId;
 
-    private GameMaster() {
+    private GameMaster(String gameId) {
+        this.gameId = gameId;
         boardFacade = new BoardFacade();
         gameEventListeners = new ArrayList<>();
     }
 
-    public static GameMaster newGame() {
-        return new GameMaster();
+    public static GameMaster newGame(String gameId) {
+        return new GameMaster(gameId);
     }
 
     public void startGame() {
         boardFacade.initBoard();
-        GameEvent event = new GameEvent(GameEventType.BOARD_STATE_CHANGED, boardFacade.getStatus(), boardFacade.getBoardState());
+        notifyGameStateChanged();
+    }
+
+    public void notifyGameStateChanged() {
+        GameEvent event = new GameEvent(GameEventType.BOARD_STATE_CHANGED,
+                boardFacade.getStatus(),
+                boardFacade.getBoardState(),
+                gameId);
         gameEventListeners.forEach(listener -> listener.handleEvent(event));
     }
 
-    public void playerJoined() {
-        GameEvent event = new GameEvent(GameEventType.PLAYER_JOINED, boardFacade.getStatus(), boardFacade.getBoardState());
+    public void playerJoined(String playerId, Color playerColor) {
+        GameEvent event = new GameEvent(GameEventType.PLAYER_JOINED,
+                boardFacade.getStatus(),
+                boardFacade.getBoardState(),
+                gameId, playerId,
+                playerColor);
         gameEventListeners.forEach(listener -> listener.handleEvent(event));
     }
 

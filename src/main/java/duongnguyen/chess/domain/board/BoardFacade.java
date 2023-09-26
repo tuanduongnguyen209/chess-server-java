@@ -17,6 +17,9 @@ public class BoardFacade {
     }
 
     public BoardState getBoardState() {
+        if (board == null) {
+            return new BoardState(List.of(), List.of());
+        }
         var pieces = List.of(board.getWhitePieces(), board.getBlackPieces())
                 .stream()
                 .flatMap(List::stream)
