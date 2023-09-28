@@ -71,6 +71,9 @@ class Board {
     }
 
     public Move getLastMove() {
+        if (moves.isEmpty()) {
+            return null;
+        }
         return moves.get(moves.size() - 1);
     }
 
@@ -98,7 +101,9 @@ class Board {
         int y = piece.getY();
 
         if (!getSquare(x, y).isEmpty()) {
-            getSquare(x, y).setPiece(null);
+            if (getSquare(x, y).getPiece() == piece) {
+                getSquare(x, y).setPiece(null);
+            }
 
             // Update the piece's list based on its color
             List<Piece> piecesList = piece.getColor() == Color.WHITE ? whitePieces : blackPieces;

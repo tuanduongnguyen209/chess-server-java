@@ -52,8 +52,7 @@ public class GameMaster implements GameCommandHandler {
             case MOVE -> {
                 var move = command.move();
                 boardFacade.makeMove(move.fromX(), move.fromY(), move.toX(), move.toY(), playerColor);
-                GameEvent event = new GameEvent(GameEventType.BOARD_STATE_CHANGED, boardFacade.getStatus(), boardFacade.getBoardState());
-                gameEventListeners.forEach(listener -> listener.handleEvent(event));
+                notifyGameStateChanged();
             }
             case ACCEPT_DRAW, RESIGN -> {
             }

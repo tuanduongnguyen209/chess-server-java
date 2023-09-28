@@ -7,6 +7,7 @@ import duongnguyen.chess.repository.GameSessionRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @Component
@@ -31,6 +32,7 @@ public class PersistenceAdapter implements PersistencePort {
         System.out.println("GET_GAME_SESSIONS");
         var sessions = gameSessionRepository.findAll();
         return StreamSupport.stream(sessions.spliterator(), false)
+                .filter(Objects::nonNull)
                 .map(gameSessionMapper::toDomain)
                 .toList();
     }
