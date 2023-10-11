@@ -1,21 +1,18 @@
-# Use an official Maven image as a build environment
 FROM eclipse-temurin:17-jdk-jammy AS build
-
 WORKDIR /workspace/app
-
 
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
-COPY src src
 
+COPY src src
 RUN ./mvnw install -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+
 VOLUME /tmp
-ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","duongnguyen.chess.ChessGameServerApplication.Application"]
+
+COPY --from=build /workspace/app/target/*.jar /app.jar
+
+ENTRYPOINT ["java","-jar","/app.jar"]
